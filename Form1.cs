@@ -349,7 +349,22 @@ namespace EditorTexto {
             }
             string linha = null;
             Font fonte = this.richTextBox1.Font;
-            SolidBrush pincel = new SolidBrush(Color.Black); 
+            SolidBrush pincel = new SolidBrush(Color.Black);
+            linhasPagina = e.MarginBounds.Height / fonte.GetHeight(e.Graphics);
+            linha = leitura.ReadLine(); 
+            while(contador < linhasPagina) {
+                PosY = margemSuperior + (contador * fonte.GetHeight(e.Graphics));
+                e.Graphics.DrawString(linha, fonte, pincel,margemEsquerda, PosY, new StringFormat());
+                contador++;
+                linha = leitura.ReadLine();
+            }
+            if(linha != null) {
+                e.HasMorePages = true;
+            }
+            else {
+                e.HasMorePages = false; 
+            }
+            pincel.Dispose(); 
         }
     }
 }
