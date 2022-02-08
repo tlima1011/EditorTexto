@@ -12,7 +12,7 @@ using System.IO;
 namespace EditorTexto {
     public partial class frmEditor : Form {
 
-        StreamReader leitura = null; 
+        StringReader leitura = null; 
 
         public frmEditor() {
             InitializeComponent();
@@ -237,7 +237,6 @@ namespace EditorTexto {
                 else if (n == false & i == false) {
                     richTextBox1.SelectionFont = new Font(nome_da_fonte, tamanho_da_fonte, FontStyle.Underline);
                 }
-
             }
             else {
                 if (n == true & i == true) {
@@ -251,6 +250,29 @@ namespace EditorTexto {
                 }
             }
         }
+
+        private void alinharEsquerda() {
+            richTextBox1.SelectionAlignment = HorizontalAlignment.Left;
+        }
+
+        private void alinharDireita() {
+            richTextBox1.SelectionAlignment = HorizontalAlignment.Right;
+        }
+
+        private void alinharCentro() {
+            richTextBox1.SelectionAlignment = HorizontalAlignment.Center;
+        }
+
+        private void imprimir() {
+            printDialog1.Document = printDocument1;
+            string texto = this.richTextBox1.Text;
+            leitura = new StringReader(texto); 
+            if(printDialog1.ShowDialog() == DialogResult.OK) {
+                this.printDocument1.Print(); 
+            }
+        }
+
+
 
         private void btnNegrito_Click(object sender, EventArgs e) {
             negrito();
@@ -282,6 +304,52 @@ namespace EditorTexto {
 
         private void btnRecortar_Click(object sender, EventArgs e) {
             recortar(); 
+        }
+
+        private void centralizarToolStripMenuItem_Click(object sender, EventArgs e) {
+            alinharCentro(); 
+        }
+
+        private void esquerdaToolStripMenuItem_Click(object sender, EventArgs e) {
+            alinharEsquerda(); 
+        }
+
+        private void direitaToolStripMenuItem_Click(object sender, EventArgs e) {
+            alinharDireita(); 
+        }
+
+        private void btnEsquerda_Click(object sender, EventArgs e) {
+            alinharEsquerda();
+        }
+
+        private void btnCentro_Click(object sender, EventArgs e) {
+            alinharCentro();
+        }
+
+        private void btnDireita_Click(object sender, EventArgs e) {
+            alinharDireita();
+        }
+
+        private void imprimirToolStripMenuItem_Click(object sender, EventArgs e) {
+            imprimir(); 
+        }
+
+        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e) {
+            float linhasPagina = 0;
+            float PosY = 0;
+            int contador = 0;
+            float margemEsquerda = e.MarginBounds.Left - 50;
+            float margemSuperior = e.MarginBounds.Top - 50;
+            if(margemEsquerda < 5) {
+                margemEsquerda = 20; 
+            }
+            
+            if (margemSuperior < 5) {
+                margemSuperior = 20;
+            }
+            string linha = null;
+            Font fonte = this.richTextBox1.Font;
+            SolidBrush pincel = new SolidBrush(Color.Black); 
         }
     }
 }
